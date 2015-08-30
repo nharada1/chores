@@ -2,11 +2,17 @@
 from flask import Flask, make_response, jsonify
 from flask.ext.restful import Api
 
-from resources import WheelAPI, WheelListAPI
+from chores.resources import WheelAPI, WheelListAPI
 
-chores = Flask(__name__)
-api = Api(chores)
 
+def init_app():
+    chores = Flask(__name__)
+    api = Api(chores)
+    api.add_resource(WheelAPI, '/api/wheels/<string:id>', endpoint='wheel')
+    api.add_resource(WheelListAPI, '/api/wheels', endpoint='wheels')
+    return chores
+
+chores = init_app()
 
 @chores.errorhandler(404)
 def not_found(error):
@@ -14,8 +20,6 @@ def not_found(error):
 
 
 def run_server():
-    api.add_resource(WheelAPI, '/api/wheels/<string:id>', endpoint='wheel')
-    api.add_resource(WheelListAPI, '/api/wheels', endpoint='wheels')
     chores.run(debug=True)
 
 if __name__ == "__main__":

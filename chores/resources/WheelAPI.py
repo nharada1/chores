@@ -1,7 +1,7 @@
 from flask import abort
 from flask.ext.restful import Resource, reqparse
 
-import database
+import chores.database as database
 
 from datetime import datetime
 from dateutil.parser import parse
@@ -29,7 +29,7 @@ class WheelAPI(Resource):
 
         date_diff = datetime.now() - parse(result['date_created'])
         days_since = date_diff.days
-        print(days_since)
         result['people'] = rotate_list(result['people'], days_since)
         result['chores'] = rotate_list(result['chores'], days_since)
+        print("test")
         return result

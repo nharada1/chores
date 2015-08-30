@@ -1,1 +1,1 @@
-__author__ = 'nharada'
+from .chore_server import chores

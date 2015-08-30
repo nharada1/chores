@@ -1,7 +1,7 @@
 from flask import abort
 from flask.ext.restful import Resource, reqparse
 
-import database
+import chores.database as database
 
 
 class WheelListAPI(Resource):
@@ -14,5 +14,10 @@ class WheelListAPI(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        new_id = database.new_wheel(args['people'], args['chores'], args['days_per_rotation'])
+        try:
+            new_id = database.new_wheel(args['people'], args['chores'], args['days_per_rotation'])
+        except ValueError as e:
+            print(e)
+            if 'People and chores must be' in str(e):
+                abort(500)
         return {'id': new_id}

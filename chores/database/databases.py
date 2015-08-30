@@ -64,5 +64,4 @@ class LocalDB(Database):
         wheel = {'people': people, 'chores': chores, 'days_per_rotation': days_per_rotation, 'date_created': cur_day}
         new_id = str(uuid.uuid1())
         self.db[new_id] = wheel
-        print(self.db)
         return new_id
