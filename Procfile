@@ -1,1 +1,1 @@
-web: gunicorn chore_server:chores --chdir chores --log-file -
+web: gunicorn chore_server:chore_app --chdir chores --log-file -
