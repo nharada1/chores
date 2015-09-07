@@ -1,12 +1,13 @@
 import chores
 import unittest
+import json
 
 
 class ChoresTestCase(unittest.TestCase):
     """Unittests in this module rely on the memory resident database backend"""
     def setUp(self):
-        chores.chores.testing = True
-        self.app = chores.chores.test_client()
+        chores.chore_app.testing = True
+        self.app = chores.chore_app.test_client()
 
     def tearDown(self):
         pass
@@ -20,10 +21,11 @@ class ChoresTestCase(unittest.TestCase):
         assert('requested URL was not found on the server' in str(rv.data))
 
     def test_create_new(self):
-        args = "'people': ['Vincent', 'Jules', 'Mia'], 'chores': ['Cook', 'Clean', 'Water Plants'], 'days_per_rotation': 3}"
+        args = '{"people": ["Nate", "Noelle"], "chores": ["Garbage", "Laundry"], "days_per_rotation": 4}'
         rv = self.app.post('/api/wheels', data=args, content_type='application/json')
-        print(rv.__dict__)
-        #import pdb; pdb.set_trace()
+        recv = json.loads(rv.data.decode("utf-8"))
+        assert('id' in recv)
+        assert(type(recv['id']) == str)
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,1 +1,1 @@
-from .chore_server import chores
+from .chore_server import chore_app

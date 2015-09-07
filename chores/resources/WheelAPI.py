@@ -29,7 +29,9 @@ class WheelAPI(Resource):
 
         date_diff = datetime.now() - parse(result['date_created'])
         days_since = date_diff.days
-        result['people'] = rotate_list(result['people'], days_since)
-        result['chores'] = rotate_list(result['chores'], days_since)
-        print("test")
-        return result
+        offset = days_since % int(result['days_per_rotation'])
+
+        resource = result
+        resource['offset'] = offset
+        del resource['date_created']
+        return resource
