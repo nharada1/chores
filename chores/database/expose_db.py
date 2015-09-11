@@ -1,6 +1,10 @@
 from .databases import LocalDB, MongoDB
+import os
 
-db = MongoDB()
+if 'ON_HEROKU' in os.environ:
+    db = MongoDB()
+else:
+    db = LocalDB()
 
 
 def get_wheel(id):

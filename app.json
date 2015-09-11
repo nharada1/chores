@@ -1,0 +1,11 @@
+{
+    "name": "chores-backend",
+    "repository": "https://github.com/nharada1/chores",
+    "addons": ["mongolab"],
+    "env": {
+        "ON_HEROKU": {
+            "description": "Should be 1 on Heroku",
+            "value": 1
+        },
+    }
+}
