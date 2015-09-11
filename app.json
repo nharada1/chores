@@ -5,8 +5,8 @@
     "addons": ["mongolab"],
     "env": {
         "ON_HEROKU": {
-            "description": "Should be 1 on Heroku",
-            "value": 1
+            "description": "Should be True on Heroku",
+            "value": "True"
         }
     }
 }
