@@ -1,11 +1,12 @@
 import uuid
+import pymongo
+import os
 from datetime import datetime
-
 
 
 class Database(object):
     def __int__(self):
-        pass
+        self.init_connection()
 
     def init_connection(self):
         pass
@@ -48,6 +49,8 @@ class LocalDB(Database):
     def __init__(self):
         """Local DB is for testing, uses a simple dict for basically all storage"""
         self.db = {}
+        self.init_connection()
+        super(LocalDB, self).__init__()
 
     def init_connection(self):
         pass
@@ -65,3 +68,29 @@ class LocalDB(Database):
         new_id = str(uuid.uuid1())
         self.db[new_id] = wheel
         return new_id
+
+
+class MongoDB(Database):
+    def __init__(self):
+        """MongoDB bindings for production"""
+        self.uri = os.environ.get('MONGOLAB_URI')
+        self.wheels = None
+        self.init_connection()
+        super(MongoDB, self).__init__()
+
+    def init_connection(self):
+        client = pymongo.MongoClient(self.uri)
+        default_db = client.get_default_database()
+        self.wheels = default_db.wheels
+
+    def new_wheel(self, people, chores, days_per_rotation):
+        super(MongoDB, self).new_wheel(people, chores, days_per_rotation)
+        cur_day = datetime.now().isoformat()
+        new_id = str(uuid.uuid1())
+        wheel = {'people': people, 'chores': chores, 'days_per_rotation': days_per_rotation, 'date_created': cur_day, '_id': new_id}
+        returned_id = self.wheels.insert_one(wheel).inserted_id
+        return returned_id
+
+    def get_wheel(self, wheel_id):
+        searched = self.wheels.find_one({'_id': wheel_id})
+        return searched

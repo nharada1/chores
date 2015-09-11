@@ -1,6 +1,6 @@
-from .databases import LocalDB
+from .databases import LocalDB, MongoDB
 
-db = LocalDB()
+db = MongoDB()
 
 
 def get_wheel(id):
