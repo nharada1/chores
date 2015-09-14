@@ -1,11 +1,13 @@
 from flask import Flask, make_response, jsonify
 from flask.ext.restful import Api
+from flask.ext.cors import CORS
 
 from chores.resources import WheelAPI, WheelListAPI
 
 
 def init_app():
     chore_app = Flask(__name__)
+    CORS(chore_app)
     api = Api(chore_app)
     api.add_resource(WheelAPI, '/api/wheels/<string:id>', endpoint='wheel')
     api.add_resource(WheelListAPI, '/api/wheels', endpoint='wheels')
